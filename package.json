@@ -14,10 +14,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "circom_tester": "^0.0.19",
     "circomlib": "^2.0.5",
-    "ec-elgamal-circuit": "github:Shigoto-dev19/EC-ElGamal-Scheme-Circuit",
-    "ffjavascript": "^0.2.59",
-    "poseidon-encryption-circom": "github:Shigoto-dev19/poseidon-encryption-circom2"
+    "circomlibjs": "^0.1.7",
+    "ffjavascript": "^0.2.59"
   },
   "devDependencies": {
     "@types/chai": "^4.3.5",

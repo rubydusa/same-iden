@@ -26,7 +26,6 @@ export function generateCircuitTest(circuitTest: CircuitTest): void {
     describe(circuitTest.name, () => {
         let circuit: any;
         before(async () => {
-            console.log(circuitTest.path);
             circuit = await wasmTester(circuitTest.path);
         });
 
@@ -43,8 +42,6 @@ export function generateCircuitTest(circuitTest: CircuitTest): void {
                 const output = typeof rawOutput === 'function' 
                     ? await rawOutput()
                     : rawOutput;
-
-                console.log({ input, output });
 
                 const witness = await circuit.calculateWitness(input);
                 await circuit.checkConstraints(witness);

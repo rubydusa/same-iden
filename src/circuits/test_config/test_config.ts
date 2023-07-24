@@ -5,8 +5,8 @@ export const OUTPUT_DIR = path.join(__dirname, '..', 'artifacts', 'test');
 const TEST_CIRCUITS = [
     {
         name: 'OnCurve',
-        main: 'Main',
-        path: path.join(__dirname, '..', 'on_curve.circom'),
+        main: 'OnCurve',
+        path: path.join(__dirname, '..', 'same_identity.circom'),
         parameters: [],
         publicSignals: [],
         protocol: Protocol.Groth16,
