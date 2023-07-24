@@ -5,6 +5,13 @@ include "../../node_modules/circomlib/circuits/babyjub.circom";
 include "../../node_modules/circomlib/circuits/poseidon.circom";
 include "../../node_modules/circomlib/circuits/bitify.circom";
 
+function Base8() {
+    return [
+        5299619240641551281634865583518297030282874472190772894086521144482721001553,
+        16950150798460657717958625567821834550301663161624707787222815936182638968203
+    ];
+}
+
 // does not check validity of point
 template PointHash() {
     signal input point[2];
@@ -47,10 +54,17 @@ template ValidSK() {
     signal output point[2];
 
     component skPoint = EscalarMulNoBits(254);
-    skPoint.in <== sk;
-    skPoint.p <== [0, 0];  // use base point
+    skPoint.in <== skGen;
+    skPoint.p <== Base8();
+
+    log("skGen: ", skGen);
+    log("skPoint: [", skPoint.out[0], ", ", skPoint.out[1], "]");
+
     component skGenerate = PointHash();
     skGenerate.point <== skPoint.out;
+
+    log("hash: ", skGenerate.hash);
+
     skGenerate.hash === sk;
 
     point <== skPoint.out;
