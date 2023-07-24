@@ -1,0 +1,31 @@
+{
+  "name": "same-iden",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "npm run generate-circom-tests && mocha -r ts-node/register --recursive test",
+    "generate-circom-tests": "ts-node ./src/circuits/test_config/test_config.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "circomlib": "^2.0.5",
+    "ec-elgamal-circuit": "github:Shigoto-dev19/EC-ElGamal-Scheme-Circuit",
+    "ffjavascript": "^0.2.59",
+    "poseidon-encryption-circom": "github:Shigoto-dev19/poseidon-encryption-circom2"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.3.5",
+    "@types/chai-as-promised": "^7.1.5",
+    "@types/mocha": "^10.0.1",
+    "chai": "^4.3.7",
+    "chai-as-promised": "^7.1.1",
+    "mocha": "^10.2.0",
+    "ts-node": "^10.9.1"
+  }
+}
