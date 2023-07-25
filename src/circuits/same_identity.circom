@@ -65,8 +65,8 @@ template ValidSK() {
 
 template SameIden() {
     // encrypted sk points
-    signal input eSkPoint1[2];  // public
-    signal input eSkPoint2[2];  // public
+    signal input eSk1Point[2];  // public
+    signal input eSk2Point[2];  // public
 
     signal input sk1Gen;
     signal input sk2Gen;
@@ -82,16 +82,16 @@ template SameIden() {
     validateSk2.skGen <== sk2Gen;
     validateSk2.sk <== sk2;
 
-    component eSkPoint1Calc = EscalarMulNoBits(254);
-    component eSkPoint2Calc = EscalarMulNoBits(254);
+    component eSk1PointCalc = EscalarMulNoBits(254);
+    component eSk2PointCalc = EscalarMulNoBits(254);
 
-    eSkPoint1Calc.in <== sk2;
-    eSkPoint1Calc.p <== validateSk1.point;
-    eSkPoint2Calc.in <== sk1;
-    eSkPoint2Calc.p <== validateSk2.point;
+    eSk1PointCalc.in <== sk2;
+    eSk1PointCalc.p <== validateSk1.point;
+    eSk2PointCalc.in <== sk1;
+    eSk2PointCalc.p <== validateSk2.point;
 
-    eSkPoint1Calc.out === eSkPoint1;
-    eSkPoint2Calc.out === eSkPoint2;
+    eSk1PointCalc.out === eSk1Point;
+    eSk2PointCalc.out === eSk2Point;
 }
 
 template OnCurve() {

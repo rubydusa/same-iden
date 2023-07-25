@@ -34,8 +34,8 @@ generateCircuitTest({
                 const sk1Data = computeSk(babyjub, poseidon, "4");
                 const sk2Data = computeSk(babyjub, poseidon, "6");
 
-                const eSkPoint1 = encrypt(babyjub, sk2Data.sk, sk1Data.skPoint);
-                const eSkPoint2 = encrypt(babyjub, sk1Data.sk, sk2Data.skPoint);
+                const eSk1Point = encrypt(babyjub, sk2Data.sk, sk1Data.skPoint);
+                const eSk2Point = encrypt(babyjub, sk1Data.sk, sk2Data.skPoint);
 
                 // demonstration of how decrypting works
                 // ---
@@ -50,8 +50,8 @@ generateCircuitTest({
                 // });
 
                 return {
-                    eSkPoint1: stringPoint(babyjub, eSkPoint1),
-                    eSkPoint2: stringPoint(babyjub, eSkPoint2),
+                    eSk1Point: stringPoint(babyjub, eSk1Point),
+                    eSk2Point: stringPoint(babyjub, eSk2Point),
                     sk1Gen: Scalar.toString(sk1Data.skGen),
                     sk2Gen: Scalar.toString(sk2Data.skGen),
                     sk1: Scalar.toString(babyjub.F.toString(sk1Data.sk)),
