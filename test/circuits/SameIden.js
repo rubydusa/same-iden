@@ -1,6 +1,6 @@
 const path = require('path');
 const { buildBabyjub, buildPoseidon } = require('circomlibjs');
-const { Scalar } = require('ffjavascript');
+const { Scalar, ZqField } = require('ffjavascript');
 const { OUTPUT_DIR } = require('../../src/circuits/test_config/test_config');
 
 const { generateCircuitTest } = require('../../src/circuits/test_config/generate_tests');
@@ -27,6 +27,18 @@ generateCircuitTest({
                 const eSkPoint1 = babyjub.mulPointEscalar(sk1Point, sk2);
                 const eSkPoint2 = babyjub.mulPointEscalar(sk2Point, sk1);
 
+                // demonstration of how decrypting works
+                // ---
+                // const field = new ZqField(babyjub.subOrder);
+                // const crackSk2 = field.inv(BigInt(sk1));
+                //
+                // const crackResult = babyjub.mulPointEscalar(eSkPoint2, crackSk2);
+                //
+                // console.log({
+                //     sk2Point: [babyjub.F.toString(sk2Point[0]), babyjub.F.toString(sk2Point[1])],
+                //     crackResult: [babyjub.F.toString(crackResult[0]), babyjub.F.toString(crackResult[1])],
+                // });
+
                 const res = {
                     eSkPoint1: [babyjub.F.toString(eSkPoint1[0]), babyjub.F.toString(eSkPoint1[1])],
                     eSkPoint2: [babyjub.F.toString(eSkPoint2[0]), babyjub.F.toString(eSkPoint2[1])],
@@ -35,11 +47,6 @@ generateCircuitTest({
                     sk1: Scalar.toString(sk1),
                     sk2: Scalar.toString(sk2)
                 };
-
-                console.log({
-                    ...res,
-                    sk1Point: [babyjub.F.toString(sk1Point[0]), babyjub.F.toString(sk1Point[1])],
-                });
 
                 return res;
             },
