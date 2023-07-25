@@ -3,8 +3,11 @@ const { buildBabyjub, buildPoseidon } = require('circomlibjs');
 const { Scalar, ZqField } = require('ffjavascript');
 const { OUTPUT_DIR } = require('../../src/circuits/test_config/test_config');
 
-const { stringPoint } = require('./utils.js');
+const { stringPoint, pointEq } = require('./utils.js');
 const { generateCircuitTest } = require('../../src/circuits/test_config/generate_tests');
+const { expect } = require('chai');
+
+const JF = new ZqField("2736030358979909402780800718157159386076813972158567259200215660948447373041");
 
 // gen is string
 const computeSk = (curve, poseidon, gen) => {
@@ -22,6 +25,9 @@ const computeSk = (curve, poseidon, gen) => {
 // [sk]message
 const encrypt = (curve, sk, message) => curve.mulPointEscalar(message, curve.F.toString(sk));
 
+// [sk]message * [1/sk]
+const decrypt = (curve, f, sk, encryptedMessage) => curve.mulPointEscalar(encryptedMessage, f.inv(BigInt(curve.F.toString(sk))));
+
 generateCircuitTest({
     name: 'SameIden',
     path: path.join(OUTPUT_DIR, 'SameIden.t.circom'),
@@ -37,17 +43,11 @@ generateCircuitTest({
                 const eSk1Point = encrypt(babyjub, sk2Data.sk, sk1Data.skPoint);
                 const eSk2Point = encrypt(babyjub, sk1Data.sk, sk2Data.skPoint);
 
-                // demonstration of how decrypting works
-                // ---
-                // const field = new ZqField(babyjub.subOrder);
-                // const crackSk2 = field.inv(BigInt(sk1));
-                //
-                // const crackResult = babyjub.mulPointEscalar(eSkPoint2, crackSk2);
-                //
-                // console.log({
-                //     sk2Point: [babyjub.F.toString(sk2Point[0]), babyjub.F.toString(sk2Point[1])],
-                //     crackResult: [babyjub.F.toString(crackResult[0]), babyjub.F.toString(crackResult[1])],
-                // });
+                const dSk1Point = decrypt(babyjub, JF, sk2Data.sk, eSk1Point);
+                const dSk2Point = decrypt(babyjub, JF, sk1Data.sk, eSk2Point);
+
+                expect(pointEq(babyjub, dSk1Point, sk1Data.skPoint)).to.be.true;
+                expect(pointEq(babyjub, dSk2Point, sk2Data.skPoint)).to.be.true;
 
                 return {
                     eSk1Point: stringPoint(babyjub, eSk1Point),
