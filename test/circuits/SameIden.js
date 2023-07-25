@@ -3,6 +3,7 @@ const { buildBabyjub, buildPoseidon } = require('circomlibjs');
 const { Scalar, ZqField } = require('ffjavascript');
 const { OUTPUT_DIR } = require('../../src/circuits/test_config/test_config');
 
+const { stringPoint } = require('./utils.js');
 const { generateCircuitTest } = require('../../src/circuits/test_config/generate_tests');
 
 generateCircuitTest({
@@ -21,8 +22,8 @@ generateCircuitTest({
 
                 const poseidon = await buildPoseidon();
 
-                const sk1 = babyjub.F.toString(poseidon([babyjub.F.toString(sk1Point[0]), babyjub.F.toString(sk1Point[1])]));
-                const sk2 = babyjub.F.toString(poseidon([babyjub.F.toString(sk2Point[0]), babyjub.F.toString(sk2Point[1])]));
+                const sk1 = babyjub.F.toString(poseidon(stringPoint(babyjub, sk1Point)));
+                const sk2 = babyjub.F.toString(poseidon(stringPoint(babyjub, sk2Point)));
 
                 const eSkPoint1 = babyjub.mulPointEscalar(sk1Point, sk2);
                 const eSkPoint2 = babyjub.mulPointEscalar(sk2Point, sk1);
@@ -40,8 +41,8 @@ generateCircuitTest({
                 // });
 
                 const res = {
-                    eSkPoint1: [babyjub.F.toString(eSkPoint1[0]), babyjub.F.toString(eSkPoint1[1])],
-                    eSkPoint2: [babyjub.F.toString(eSkPoint2[0]), babyjub.F.toString(eSkPoint2[1])],
+                    eSkPoint1: stringPoint(babyjub, eSkPoint1),
+                    eSkPoint2: stringPoint(babyjub, eSkPoint2),
                     sk1Gen: Scalar.toString(sk1Gen),
                     sk2Gen: Scalar.toString(sk2Gen),
                     sk1: Scalar.toString(sk1),
