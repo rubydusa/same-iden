@@ -56,15 +56,8 @@ template ValidSK() {
     component skPoint = EscalarMulNoBits(254);
     skPoint.in <== skGen;
     skPoint.p <== Base8();
-
-    log("skGen: ", skGen);
-    log("skPoint: [", skPoint.out[0], ", ", skPoint.out[1], "]");
-
     component skGenerate = PointHash();
     skGenerate.point <== skPoint.out;
-
-    log("hash: ", skGenerate.hash);
-
     skGenerate.hash === sk;
 
     point <== skPoint.out;
